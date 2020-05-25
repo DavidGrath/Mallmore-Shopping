@@ -3,12 +3,15 @@ import './screens/home_screen.dart';
 import './bloc/Bloc.dart';
 import './bloc/BlocProvider.dart';
 import './bloc/ItemBloc.dart';
+import './bloc/CartBloc.dart';
 
 void main() => runApp(MallmoreApp());
 
 class MallmoreApp extends StatelessWidget {
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<CartBloc>(
+      bloc : CartBloc(),
+      child : BlocProvider(
       bloc : ItemBloc(),
       child :MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -17,7 +20,7 @@ class MallmoreApp extends StatelessWidget {
         fontFamily: "VarelaRound"
       ),
       home: HomeScreen(),
-    ));
+    )));
   }
 
 }

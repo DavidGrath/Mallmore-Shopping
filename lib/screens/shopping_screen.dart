@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import '../models/Item.dart';
 import '../utils/Constants.dart';
 import '../templates/ItemView.dart';
-import '../bloc/Bloc.dart';
+import '../templates/counted_cart.dart';
 import '../bloc/BlocProvider.dart';
 import '../bloc/ItemBloc.dart';
+import '../bloc/CartBloc.dart';
 
 class ShoppingScreen extends StatefulWidget {
   int CATEGORY;
@@ -19,7 +19,6 @@ class ShoppingScreen extends StatefulWidget {
 class _ShoppingScreenState extends State<ShoppingScreen>{
   int CATEGORY;
   _ShoppingScreenState(this.CATEGORY);
-  var items = List<Item>();
 
   String titleFromCategory() {
     switch(CATEGORY){
@@ -36,18 +35,37 @@ class _ShoppingScreenState extends State<ShoppingScreen>{
     }
   }
   
+  // @override
+  // void dispose() {
+  //   bloc.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
-
     final ItemBloc bloc = BlocProvider.of(context);
+
     bloc.fetchItems();
+
+    var cartBloc = BlocProvider.of<CartBloc>(context);
 
     return StreamBuilder(
       stream : bloc.itemStream,
       builder : (context, snapshot) {
+
     return Scaffold(
       appBar: AppBar(
-        title : Text(titleFromCategory())
+        title : Text(titleFromCategory()),
+        actions: <Widget>[
+              StreamBuilder(
+                initialData: 0,
+                stream: cartBloc.cartCountStream,
+                builder: (context, snapshot){
+                  var count = snapshot.data as int;
+                  return CountedCart(count : count);
+                },
+              )
+            ],
       ),
       body: Container(
         padding: EdgeInsets.all(10.0),
@@ -71,7 +89,9 @@ class _ShoppingScreenState extends State<ShoppingScreen>{
   
   List<ItemView> _buildItemViews(List<Item> items) {
     var views = List<ItemView>();
-    if(items == null) return views;
+    if(items == null) {
+      return views;
+    }
     for(var i in items) {
       if(i.categories.contains(CATEGORY)) {
         views.add(ItemView(item: i,));

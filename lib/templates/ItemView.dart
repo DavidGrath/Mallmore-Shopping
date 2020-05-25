@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/Item.dart';
 import '../bloc/BlocProvider.dart';
 import '../bloc/ItemBloc.dart';
+import '../screens/item_screen.dart';
 
 
 class ItemView extends StatefulWidget {
@@ -28,8 +29,9 @@ class _ItemViewState extends State<ItemView> {
   @override
   Widget build(BuildContext context) {
 
-
-    return Card(
+    ItemBloc bloc = BlocProvider.of(context);
+    return GestureDetector(
+    child : Card(
       child : Padding(
         padding: EdgeInsets.all(10.0),
         child : Column(
@@ -44,6 +46,7 @@ class _ItemViewState extends State<ItemView> {
             
             child :Text(item.name,
               style: itemStyle,
+              overflow: TextOverflow.ellipsis,
             ),
             ),
             Text("${item.currencyCode}${item.price}",
@@ -56,6 +59,13 @@ class _ItemViewState extends State<ItemView> {
           ],
         ),
       ),
+    ),
+    onTap: (){
+      bloc.setSingleItem(item);
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return ItemDetailScreen();
+      }));
+    },
     );
   }
 }
