@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './shipping_screen.dart';
 import '../models/Cart.dart';
 import '../templates/item_view_cart.dart';
 import '../bloc/BlocProvider.dart';
@@ -45,6 +46,9 @@ class _CartScreenState extends State<CartScreen> {
                   return RaisedButton(
                     child: Text("Checkout"),
                     onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ShippingScreen();
+                      }));
                     },
                   );
                 }

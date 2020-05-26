@@ -45,8 +45,6 @@ class _ShoppingScreenState extends State<ShoppingScreen>{
   Widget build(BuildContext context) {
     final ItemBloc bloc = BlocProvider.of(context);
 
-    bloc.fetchItems();
-
     var cartBloc = BlocProvider.of<CartBloc>(context);
 
     return StreamBuilder(

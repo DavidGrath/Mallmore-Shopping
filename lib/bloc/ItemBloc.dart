@@ -21,7 +21,11 @@ class ItemBloc implements Bloc {
       Item("Washing Gra","","\$",125,4.2,10,[CATEGORY_ELECTRONICS],'images/washing_machine.jpeg'),
     ];
 
-  void fetchItems() {
+  ItemBloc() {
+    _fetchItems();
+  }
+
+  void _fetchItems() {
     itemsController.sink.add(items);
   }
 

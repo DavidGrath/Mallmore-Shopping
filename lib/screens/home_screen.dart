@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import './shopping_screen.dart';
+import './account_screen.dart';
 import './cart_screen.dart';
 import '../utils/Constants.dart';
 import '../templates/counted_cart.dart';
 import '../bloc/BlocProvider.dart';
 import '../bloc/CartBloc.dart';
+import '../bloc/ItemBloc.dart';
+import '../models/Item.dart';
+import '../screens/item_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -16,16 +20,77 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  String mainName = "HOME";
+  String title = "Mallmore Shopping";
+  Widget home = HomePage();
+  Widget cartScreen = CartScreen();
+
   @override
   Widget build(BuildContext context) {
-
+    Widget main;
+    switch(mainName) {
+      case "HOME":
+        main = home;
+        title = "Mallmore Shopping";
+        break;
+      case "CART":
+        main = cartScreen;
+        title = "Cart";
+        break;
+      default:
+        main = home;
+        title = "Mallmore Shopping";
+        break;
+    }
     var cartBloc = BlocProvider.of<CartBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mallmore Shopping"),
+        title: Text(title),
         actions: <Widget>[
-          StreamBuilder(
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              var result = await showSearch<Item>(context: context, delegate: ItemSearchDelegate());
+              if(result != null) {
+                var itemBloc = BlocProvider.of<ItemBloc>(context);
+                itemBloc.setSingleItem(result);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                  return ItemDetailScreen();
+                }));
+              }
+            },
+          )
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text("Mallmore Shopping",
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold
+              ),),
+              decoration: BoxDecoration(
+                color: Colors.lightBlue
+              ),
+            ),
+            ListTile(
+              title: Text("Home"),
+              leading: Icon(Icons.home),
+              onTap: (){
+                setState(() {
+                  mainName = "HOME";
+                  Navigator.of(context).pop();
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Cart"),
+              leading: Icon(Icons.shopping_cart),
+              trailing: StreamBuilder(
                 initialData: 0,
                 stream: cartBloc.cartCountStream,
                 builder: (context, snapshot){
@@ -33,9 +98,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   return CountedCart(count : count);
                 },
               ),
-        ],
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                return CartScreen();
+                }));
+              },
+            ),
+            ListTile(
+              title: Text("Offer"),
+              leading: Icon(Icons.local_offer),
+            ),
+            ListTile(
+              title: Text("Account"),
+              leading: Icon(Icons.person),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return AccountScreen();
+                }));
+              },
+            ),
+            ListTile(
+              title: Text("Settings"),
+              leading: Icon(Icons.settings),
+            ),
+          ],
+        ),
       ),
-      body : HomePage()
+      body : main
     );
   }
 
@@ -130,5 +221,69 @@ var categoryStyle = TextStyle(
       },
     );
   }
+
+}
+
+class ItemSearchDelegate extends SearchDelegate<Item> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+      return <Widget>[
+        IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: (){
+            query = "";
+          },
+        )
+      ];
+    }
+  
+    @override
+    Widget buildLeading(BuildContext context) {
+      return IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: (){
+          close(context, null);
+        },
+        );
+    }
+  
+    @override
+    Widget buildResults(BuildContext context) {
+      var itemBloc = BlocProvider.of<ItemBloc>(context);
+      return StreamBuilder<List<Item>>(
+        stream: itemBloc.itemStream,
+        builder : (context, snapshot) {
+          var results = snapshot.data.where((item)=>item.name.toLowerCase().contains(query));
+          
+          if(!snapshot.hasData || results.isEmpty) {
+            return Center(
+              child : Text("No Results")
+            );
+          }
+          
+          return ListView(
+            children: results.map<ListTile>((item)=>
+            ListTile(
+                title: Text(item.name),
+                onTap: (){
+                  close(context, item);
+                },
+            )
+            ).toList()
+          );
+        }
+      );
+    }
+  
+    @override
+    Widget buildSuggestions(BuildContext context) {
+      return ListView(
+        children: <Widget>[
+          ListTile(
+            title: Text("You've been here before, havent'cha"),
+          )
+        ],
+      );
+    }
 
 }

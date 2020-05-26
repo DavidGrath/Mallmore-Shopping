@@ -8,17 +8,20 @@ class CountedCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon : Stack(
-        overflow: Overflow.visible,
-      children: <Widget>[
-        Icon(
-          Icons.shopping_cart
-        ),
-        Positioned(
-          top: -7.0,
-          right: -5.0,
-          child: Material(
+    return 
+    // IconButton(
+      // icon : 
+      // Stack(
+      //   overflow: Overflow.visible,
+      // children: <Widget>[
+      //   Icon(
+      //     Icons.shopping_cart
+      //   ),
+      //   Positioned(
+      //     top: -7.0,
+      //     right: -5.0,
+      //     child: 
+          Material(
                     type: MaterialType.circle,
                     color: Colors.red,
                     child : 
@@ -32,15 +35,15 @@ class CountedCart extends StatelessWidget {
                       ),
                     )
                     )
-                  ),
-        )
-      ],
-    ),
-    onPressed: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context){
-        return CartScreen();
-      }));
-    },);
+                  // ),
+        // )
+      // ],
+    );
+    // onPressed: (){
+    //   Navigator.push(context, MaterialPageRoute(builder: (context){
+    //     return CartScreen();
+    //   }));
+    // },);
   }
 
 }
