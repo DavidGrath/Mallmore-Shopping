@@ -6,112 +6,181 @@ import '../bloc/BlocProvider.dart';
 import '../models/Item.dart';
 import '../templates/star_rating.dart';
 import '../templates/counted_cart.dart';
+import '../templates/pageview_indicator.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ItemDetailScreenState();
 }
 
-class _ItemDetailScreenState extends State<ItemDetailScreen>{
+class _ItemDetailScreenState extends State<ItemDetailScreen> {
+  var colors = <Color>[
+    Colors.yellow,
+    Colors.lightBlue,
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.blueGrey
+  ];
   @override
   Widget build(BuildContext context) {
     ItemBloc bloc = BlocProvider.of<ItemBloc>(context);
     var cartBloc = BlocProvider.of<CartBloc>(context);
     var priceStyle = TextStyle(
-      color: Colors.lightBlue,
-      fontWeight: FontWeight.bold,
-      fontSize: 20.0
-    );
+        color: Colors.lightBlue, fontWeight: FontWeight.bold, fontSize: 20.0);
     return StreamBuilder(
-      stream : bloc.singleItem,
-      builder : (context, snapshot){
-        var item = snapshot.data as Item;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(item.name),
-            actions: <Widget>[
-              StreamBuilder(
-                initialData: 0,
-                stream: cartBloc.cartCountStream,
-                builder: (context, snapshot){
-                  var count = snapshot.data as int;
-                  return CountedCart(count : count);
-                },
-              )
-            ],
-          ),
-          body: Container(
-            padding: EdgeInsets.all(10.0),
-            child: ListView(
-              children: <Widget>[
-                Image(image: AssetImage(item.image), width: 200, height: 200,),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child : Text(item.name)
-                    ),
-                    FavoriteIcon(),
-                  ],
-                ),
-                StarRating(averageRating: 4.5,),
-                Text("${item.currencyCode}${item.price}",
-                style: priceStyle,),
-                RaisedButton(
-                  color: Colors.lightBlue,
-                  child: Text("Add to Cart",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),),
-                    onPressed: (){
-                      cartBloc.addToCart(item);
-                    },
-                )
-              ],
+        stream: bloc.singleItem,
+        builder: (context, snapshot) {
+          var item = snapshot.data as Item;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(item.name),
             ),
-          ),
-        );
-      }
-    );
+            body: Container(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage(item.image),
+                          width: 200,
+                          height: 200,
+                        ),
+                        PageViewIndicator(
+                          index: 2,
+                          size: 5,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(child: Text(item.name)),
+                            FavoriteIcon(),
+                          ],
+                        ),
+                        StarRating(
+                          averageRating: item.rating,
+                        ),
+                        Text(
+                          "${item.currencyCode}${item.price}",
+                          style: priceStyle,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Select Size"),
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: List<double>.generate(6, (i) {
+                              return (i * 0.5) + 6;
+                            }).map<Widget>((num) {
+                              return Container(
+                                margin: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      width: 0.5, color: Colors.lightBlue),
+                                ),
+                                child: Text(
+                                  num.toString(),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        Text("Select Color"),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: colors.map<Widget>((c) {
+                              return Container(
+                                padding: EdgeInsets.all(10.0),
+                                margin: EdgeInsets.all(10.0),
+                                child: Material(
+                                  type: MaterialType.circle,
+                                  color: c,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Expanded(
+                        child: RaisedButton(
+                          color: Colors.lightBlue,
+                          child: Text(
+                            "Add to Cart",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () {
+                            cartBloc.addToCart(item);
+                          },
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 
 class FavoriteIcon extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _FavoriteIconState();
-
 }
 
 class _FavoriteIconState extends State<FavoriteIcon> {
-
   bool fav = false;
 
   @override
   Widget build(BuildContext context) {
-    Icon icon = fav? 
-            Icon(Icons.favorite, color: Colors.pink,): 
-            Icon(Icons.favorite_border, color: Colors.grey,);
+    Icon icon = fav
+        ? Icon(
+            Icons.favorite,
+            color: Colors.pink,
+          )
+        : Icon(
+            Icons.favorite_border,
+            color: Colors.grey,
+          );
     return GestureDetector(
       child: icon,
-      onTap: (){
-        setState(() {         
+      onTap: () {
+        setState(() {
           fav = !fav;
-          var text = fav? "Item added to favorites" : "Item Removed from favorites";
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text(text),
-              action: SnackBarAction(
-                label: "Undo",
-                onPressed: (){
-                  setState(() {                  
-                    fav = !fav;
-                  });
-                },
-              ),
-            )
-          );
+          var text =
+              fav ? "Item added to favorites" : "Item Removed from favorites";
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(text),
+            action: SnackBarAction(
+              label: "Undo",
+              onPressed: () {
+                setState(() {
+                  fav = !fav;
+                });
+              },
+            ),
+          ));
         });
       },
     );
   }
-
 }

@@ -15,49 +15,63 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     var cartBloc = BlocProvider.of<CartBloc>(context);
     return StreamBuilder(
-      stream: cartBloc.cartStream,
-      builder : (context, snapshot) {
-        var cart = snapshot.data as Cart;
-        return (snapshot.hasData)?Scaffold(
-          appBar: AppBar(title: Text("Cart"),),
-          body: Container(
+        stream: cartBloc.cartStream,
+        builder: (context, snapshot) {
+          var cart = snapshot.data as Cart;
+          return Container(
             padding: EdgeInsets.all(10.0),
-            child: ListView.builder(
-              itemCount: cart.items.length + 2,
-              itemBuilder: (context, i){
-                if(i < cart.items.length) {
-                  return ItemViewCart(item : cart.items[i]);
-                } else if(i == cart.items.length){
-                  return Row(children: <Widget>[
-                    Expanded(child: 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Total"),
-                    )
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: (!snapshot.hasData || cart.items.isEmpty)
+                      ? Container(
+                          child: Center(
+                            child: Text("No Items"),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: cart.items.length + 1,
+                          itemBuilder: (context, i) {
+                            if (i < cart.items.length) {
+                              return ItemViewCart(item: cart.items[i]);
+                            } else {
+                              return Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Total"),
+                                  )),
+                                  Expanded(
+                                      child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text("\$${cart.total}"),
+                                  ))
+                                ],
+                              );
+                            }
+                          },
+                        ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        child: Text("Checkout"),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ShippingScreen();
+                          }));
+                        },
+                      ),
                     ),
-                    Expanded(child: 
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text("\$${cart.total}"),
-                    )
-                    )
-                  ],);
-                } else {
-                  return RaisedButton(
-                    child: Text("Checkout"),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return ShippingScreen();
-                      }));
-                    },
-                  );
-                }
-              },
+                  ],
+                )
+              ],
             ),
-          ),
-          ): Container();
-      }
-    );
+          );
+        });
   }
-
 }

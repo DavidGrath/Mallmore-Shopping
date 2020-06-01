@@ -1,3 +1,5 @@
+import './Review.dart';
+
 class Item {
   String _name;
   String _brand;
@@ -7,6 +9,9 @@ class Item {
   int _quantity;
   String _image;
   List<int> _categories;
+  //TODO Handle empty default as optional parameter
+  List<Review> reviews;
+
   Item(
     this._name,
     this._brand,
@@ -14,9 +19,9 @@ class Item {
     this._price,
     this._rating,
     this._quantity,
-    this._categories,
-    [this._image,]
-  );
+    this._categories, [
+    this._image,
+  ]);
 
   String get name => _name;
   String get brand => _brand;

@@ -29,7 +29,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   rxdart: ^0.24.1
-
+  flutter_svg: ^0.17.4
+  intl: ^0.16.1
+  uuid: 2.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,7 +49,27 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    # Icons made by <a href="https://www.flaticon.com/authors/nikita-golubev" title="Nikita Golubev">Nikita Golubev</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+    - images/flaticons/
     - images/washing_machine.jpeg
+    # Image by <a href="https://pixabay.com/users/gonghuimin468-3804290/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3040029">gonghuimin468</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3040029">Pixabay</a>
+    - images/woman_shopping_pixabay.jpg
+    # Image by <a href="https://pixabay.com/users/OpenClipart-Vectors-30363/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=153310">OpenClipart-Vectors</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=153310">Pixabay</a>
+    - images/chucks_allstars_shoe_pixabay.png
+    # Image by <a href="https://pixabay.com/users/Pexels-2286921/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1284496">Pexels</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1284496">Pixabay</a>
+    - images/fashion_shoes_pixabay.jpg
+    # Image by <a href="https://pixabay.com/users/PIRO4D-2707530/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1897708">PIRO4D</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1897708">Pixabay</a>
+    - images/shoes_pixabay_2.jpg
+    # Image by <a href="https://pixabay.com/users/cegoh-94852/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1433925">Jason Goh</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1433925">Pixabay</a>
+    - images/shoes_pixabay_3.jpg
+    # Image by <a href="https://pixabay.com/users/Capri23auto-1767157/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2751381">Capri23auto</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2751381">Pixabay</a>
+    - images/leather_case_pixabay.png
+    # Image by <a href="https://pixabay.com/users/Alexas_Fotos-686414/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3053374">Alexas_Fotos</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3053374">Pixabay</a>
+    - images/handbag_pixabay.jpg
+    # Image by <a href="https://pixabay.com/users/MabelAmber-1377835/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3068441">Mabel Amber</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3068441">Pixabay</a>
+    - images/handbag_pixabay_2.jpg
+    # Image by <a href="https://pixabay.com/users/jumpinjake-1287798/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=883113">jumpinjake</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=883113">Pixabay</a>
+    - images/handbag_pixabay_3.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
