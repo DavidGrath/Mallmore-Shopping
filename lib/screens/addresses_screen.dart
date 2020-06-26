@@ -3,8 +3,9 @@ import './checkout_screen.dart';
 import '../bloc/ShippingBloc.dart';
 import '../models/ShippingAddress.dart';
 import '../templates/shipping_address_view.dart';
+import './add_address_screen.dart';
 
-class ShippingScreen extends StatelessWidget {
+class AddressesScreen extends StatelessWidget {
   var bloc = ShippingBloc();
 
   @override
@@ -16,15 +17,7 @@ class ShippingScreen extends StatelessWidget {
 
         return Scaffold(
             appBar: AppBar(
-              title: Text("Ship To"),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    debugPrint("Add Shipping Address");
-                  },
-                )
-              ],
+              title: Text("Addresses"),
             ),
             body: Container(
               padding: EdgeInsets.all(10.0),
@@ -42,11 +35,11 @@ class ShippingScreen extends StatelessWidget {
                     Expanded(
                         child: RaisedButton(
                       color: Colors.lightBlue,
-                      child: Text("Next"),
+                      child: Text("Add Address"),
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return CheckoutScreen();
+                          return AddAddressScreen();
                         }));
                       },
                     ))

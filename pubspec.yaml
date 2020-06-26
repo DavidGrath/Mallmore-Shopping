@@ -70,6 +70,8 @@ flutter:
     - images/handbag_pixabay_2.jpg
     # Image by <a href="https://pixabay.com/users/jumpinjake-1287798/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=883113">jumpinjake</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=883113">Pixabay</a>
     - images/handbag_pixabay_3.jpg
+    # https://www.cleanpng.com/png-paypal-logo-brand-font-payment-paypal-logo-icon-pa-6357572/download-png.html
+    - images/paypal_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../bloc/ItemBloc.dart';
 import '../bloc/CartBloc.dart';
@@ -6,7 +6,10 @@ import '../bloc/BlocProvider.dart';
 import '../models/Item.dart';
 import '../templates/star_rating.dart';
 import '../templates/counted_cart.dart';
+import '../templates/review_view.dart';
+import '../templates/ItemView.dart';
 import '../templates/pageview_indicator.dart';
+import './review_screen.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   @override
@@ -111,7 +114,116 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                               );
                             }).toList(),
                           ),
-                        )
+                        ),
+                        Text("Specification"),
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      "Shown:",
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et varius diam.",
+                                    textAlign: TextAlign.end,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    "Style:",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "Lorem ipsum ",
+                                    textAlign: TextAlign.end,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Text(
+                                "Donec lobortis massa nisl, vel consequat arcu iaculis id. Mauris fringilla nisl justo, in fringilla lacus placerat accumsan. Etiam in ipsum nec ipsum vulputate dignissim at id eros. Morbi iaculis sem at velit dictum, ut scelerisque magna commodo. Cras aliquet gravida quam vitae efficitur. ")
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    "Product Review",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: Text(
+                                      "See More",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(color: Colors.lightBlue),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) {
+                                        return ReviewScreen();
+                                      }));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                StarRating(
+                                  averageRating: 4.5,
+                                ),
+                                Text("4.5 (5 reviews)")
+                              ],
+                            ),
+                            Visibility(
+                                visible: (item.reviews ?? []).length > 0,
+                                child: Container(
+                                    child: ((item.reviews ?? []).length > 0)
+                                        ? ReviewView(item.reviews[0])
+                                        : Container()))
+                          ],
+                        ),
+                        //TODO There must be a better way around nested StreamBuilders
+                        StreamBuilder<List<Item>>(
+                            stream: bloc.itemStream,
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) return Container();
+                              var items = snapshot.data;
+
+                              return Column(
+                                children: <Widget>[
+                                  Text("You Might Also Like"),
+                                  SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Flex(
+                                          direction: Axis.horizontal,
+                                          children: [0, 1, 2]
+                                              .map<ItemView>(
+                                                (i) => ItemView(
+                                                    item: items[Random()
+                                                        .nextInt(
+                                                            items.length)]),
+                                              )
+                                              .toList()))
+                                ],
+                              );
+                            })
                       ],
                     ),
                   ),

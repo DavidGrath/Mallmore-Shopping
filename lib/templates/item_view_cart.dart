@@ -17,7 +17,7 @@ class ItemViewCart extends StatelessWidget {
           children: <Widget>[
             // Flexible(
               // flex : 2,
-              Image(image: AssetImage(item.image),),
+              Image(image: AssetImage(item.image), width: 100, height: 100),
             // ),
             // Flexible(
               // flex: 3,

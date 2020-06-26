@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './profile_screen.dart';
 import './order_screen.dart';
+import './addresses_screen.dart';
+import './payment_screens/payment_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   @override
@@ -26,13 +28,21 @@ class AccountScreen extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text("Address"),
-          leading: Icon(Icons.location_on, color: Colors.lightBlue),
-        ),
+            title: Text("Address"),
+            leading: Icon(Icons.location_on, color: Colors.lightBlue),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return AddressesScreen();
+              }));
+            }),
         ListTile(
-          title: Text("Payment"),
-          leading: Icon(Icons.credit_card, color: Colors.lightBlue),
-        ),
+            title: Text("Payment"),
+            leading: Icon(Icons.credit_card, color: Colors.lightBlue),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return PaymentScreen();
+              }));
+            }),
       ],
     );
   }

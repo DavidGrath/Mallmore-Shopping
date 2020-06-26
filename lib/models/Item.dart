@@ -10,18 +10,11 @@ class Item {
   String _image;
   List<int> _categories;
   //TODO Handle empty default as optional parameter
-  List<Review> reviews;
+  List<Review> reviews = [];
 
-  Item(
-    this._name,
-    this._brand,
-    this._currencyCode,
-    this._price,
-    this._rating,
-    this._quantity,
-    this._categories, [
-    this._image,
-  ]);
+  Item(this._name, this._brand, this._currencyCode, this._price, this._rating,
+      this._quantity, this._categories,
+      [this._image, this.reviews]);
 
   String get name => _name;
   String get brand => _brand;

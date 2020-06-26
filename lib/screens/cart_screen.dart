@@ -11,6 +11,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  var shipping_costs = 100.0;
+  var import_costs = 40.0;
   @override
   Widget build(BuildContext context) {
     var cartBloc = BlocProvider.of<CartBloc>(context);
@@ -35,19 +37,82 @@ class _CartScreenState extends State<CartScreen> {
                             if (i < cart.items.length) {
                               return ItemViewCart(item: cart.items[i]);
                             } else {
-                              return Row(
-                                children: <Widget>[
-                                  Expanded(
-                                      child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Total"),
-                                  )),
-                                  Expanded(
-                                      child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text("\$${cart.total}"),
-                                  ))
-                                ],
+                              return Container(
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.grey)),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              "Items (${cart.items.length})"),
+                                        )),
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text("\$${cart.total}"),
+                                        ))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Shipping"),
+                                        )),
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text("\$$shipping_costs"),
+                                        ))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Import Charges"),
+                                        )),
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text("\$$import_costs"),
+                                        ))
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Total",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )),
+                                        Expanded(
+                                            child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            "\$${cart.total + shipping_costs + import_costs}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.lightBlue),
+                                          ),
+                                        ))
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               );
                             }
                           },
@@ -59,6 +124,7 @@ class _CartScreenState extends State<CartScreen> {
                     Expanded(
                       child: RaisedButton(
                         child: Text("Checkout"),
+                        color: Colors.lightBlue,
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {

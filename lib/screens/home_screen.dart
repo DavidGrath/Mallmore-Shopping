@@ -3,6 +3,7 @@ import './shopping_screen.dart';
 import './account_screen.dart';
 import './cart_screen.dart';
 import './explore_screen.dart';
+import './notification_screen.dart';
 import './offer_screen.dart';
 import '../utils/Constants.dart';
 import '../utils/item_search_delegate.dart';
@@ -80,7 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return NotificationScreen();
+                }));
+              },
             )
           ],
         ),
